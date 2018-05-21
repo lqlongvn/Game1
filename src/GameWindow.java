@@ -40,7 +40,7 @@ public class GameWindow extends JFrame {
             long currentTime = System.nanoTime(); // unix time từ 0.0 1/1/1970 đến thời điểm hiện tại
             if (currentTime- lastTime >= 17_000_000){
                 this.gameCanvas.positionXStar -=3;
-                this.gameCanvas.positionYCircle +=2;
+                this.gameCanvas.positionYEnemy +=2;
                 this.gameCanvas.repaint();
                 this.lastTime = currentTime;
             }

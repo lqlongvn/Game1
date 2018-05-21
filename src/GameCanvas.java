@@ -11,9 +11,9 @@ public class GameCanvas extends JPanel {
     public int positionXStar = 400;
     public int positionYStar = 300;
 
-    BufferedImage circleImage;
-    public int positionXCircle = 500;
-    public int positionYCircle = 0;
+    BufferedImage enemyImage;
+    public int positionXEnemy = 500;
+    public int positionYEnemy = 0;
 
     BufferedImage playerImage;
     public int positionXPlayer = 300;
@@ -29,7 +29,7 @@ public class GameCanvas extends JPanel {
             e.printStackTrace();
         }
         try {
-            this.circleImage =ImageIO.read(new File("resources-rocket-master/resources/images/circle.png"));
+            this.enemyImage =ImageIO.read(new File("resources-rocket-master/resources/images/circle.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -46,8 +46,11 @@ public class GameCanvas extends JPanel {
         g.setColor(Color.black);
         g.fillRect(0,0,1024,600);
 
+
         g.drawImage(this.starImage,this.positionXStar,this.positionYStar,5,5,null);
-        g.drawImage(this.circleImage,this.positionXCircle,this.positionYCircle,10,10,null);
+
+        g.drawImage(this.enemyImage,this.positionXEnemy,this.positionYEnemy,10,10,null);
+
         g.drawImage(this.playerImage,this.positionXPlayer,this.positionYPlayer,10,10,null);
 
     }
