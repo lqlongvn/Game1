@@ -11,6 +11,11 @@ public class GameCanvas extends JPanel {
     public int positionXStar = 400;
     public int positionYStar = 300;
 
+    public int positionXStar1 = 300;
+    public int positionYStar1 = 200;
+
+
+
     BufferedImage enemyImage;
     public int positionXEnemy = 500;
     public int positionYEnemy = 0;
@@ -48,6 +53,7 @@ public class GameCanvas extends JPanel {
 
 
         g.drawImage(this.starImage,this.positionXStar,this.positionYStar,5,5,null);
+        g.drawImage(this.starImage,this.positionXStar1,this.positionYStar1,5,5,null);
 
         g.drawImage(this.enemyImage,this.positionXEnemy,this.positionYEnemy,10,10,null);
 
