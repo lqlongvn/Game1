@@ -4,6 +4,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class GameCanvas extends JPanel {
 
@@ -13,6 +16,9 @@ public class GameCanvas extends JPanel {
 
     public int positionXStar1 = 300;
     public int positionYStar1 = 200;
+
+    public int[] arrayPositionXStar = {500, 450, 400, 350, 300};
+
 
 
 
@@ -49,15 +55,20 @@ public class GameCanvas extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         g.setColor(Color.black);
-        g.fillRect(0,0,1024,600);
+        g.fillRect(0, 0, 1024, 600);
 
 
-        g.drawImage(this.starImage,this.positionXStar,this.positionYStar,5,5,null);
-        g.drawImage(this.starImage,this.positionXStar1,this.positionYStar1,5,5,null);
+        g.drawImage(this.starImage, this.positionXStar, this.positionYStar, 5, 5, null);
 
-        g.drawImage(this.enemyImage,this.positionXEnemy,this.positionYEnemy,10,10,null);
 
-        g.drawImage(this.playerImage,this.positionXPlayer,this.positionYPlayer,10,10,null);
+        for (int i = 0; i < arrayPositionXStar.length; i++) {
+
+            g.drawImage(this.starImage, this.arrayPositionXStar[i], this.positionYStar1, 5, 5, null);
+            //            g.drawImage(this.starImage, this.positionXStar1, this.positionYStar1, 5, 5, null);
+        }
+        g.drawImage(this.enemyImage, this.positionXEnemy, this.positionYEnemy, 10, 10, null);
+
+        g.drawImage(this.playerImage, this.positionXPlayer, this.positionYPlayer, 10, 10, null);
 
     }
 }
