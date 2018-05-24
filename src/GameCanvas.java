@@ -6,69 +6,152 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Random;
 
 public class GameCanvas extends JPanel {
 
-    BufferedImage starImage;
-    public int positionXStar = 400;
-    public int positionYStar = 300;
-
-    public int positionXStar1 = 300;
-    public int positionYStar1 = 200;
-
-    public int[] arrayPositionXStar = {500, 450, 400, 350, 300};
-
-
-
 
     BufferedImage enemyImage;
-    public int positionXEnemy = 500;
-    public int positionYEnemy = 0;
-
     BufferedImage playerImage;
-    public int positionXPlayer = 300;
+    BufferedImage backBuffered;
+    Graphics graphics;
+
+    List<Star> stars;
+    List<Enemy> enemies;
+    List<Player> players;
+    private Random random = new Random();
+    private int countStar = 0;
+    private int countEnemy = 0;
+
+    public int positionXPlayer = 400;
     public int positionYPlayer = 200;
 
-
     public GameCanvas() {
-        this.setSize(1024,600);
-        //this.setVisible(true);
-        try {
-            this.starImage = ImageIO.read(new File("resources-rocket-master/resources/images/star.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            this.enemyImage =ImageIO.read(new File("resources-rocket-master/resources/images/circle.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            this.playerImage =ImageIO.read(new File("resources-rocket-master/resources/images/circle.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.setSize(1024, 600);
+        this.setupBackBuffered();
+        this.setupCharacter();
+
         this.setVisible(true);
     }
 
+    private void setupBackBuffered() {
+        this.backBuffered = new BufferedImage(1024, 600, BufferedImage.TYPE_4BYTE_ABGR);
+        this.graphics = this.backBuffered.getGraphics();
+    }
+
+    private void setupCharacter() {
+
+        this.setupEnemy();
+
+
+        this.playerImage = this.loadImage("resources-rocket-master/resources/images/circle.png");
+
+        this.setupStar();
+    }
+
+    private void setupStar() {
+        this.stars = new ArrayList<>();
+
+    }
+    private void setupEnemy() {
+        this.enemies = new ArrayList<>();
+
+    }
+
+    private void setupPlayer() {
+        this.players = new ArrayList<>();
+
+    }
+
+
     @Override
     protected void paintComponent(Graphics g) {
-        g.setColor(Color.black);
-        g.fillRect(0, 0, 1024, 600);
+        // lat backbuffered
+        g.drawImage(this.backBuffered, 0, 0, null);
+    }
 
+    public void renderAll() {
+        this.renderBackground();
 
-        g.drawImage(this.starImage, this.positionXStar, this.positionYStar, 5, 5, null);
+        this.stars.forEach(star -> star.render(graphics));
+        this.enemies.forEach(enemy -> enemy.render(graphics));
 
+        this.graphics.drawImage(this.playerImage, this.positionXPlayer, this.positionYPlayer, null);
+//        this.players.forEach(player -> player.render(graphics));
+       
 
-        for (int i = 0; i < arrayPositionXStar.length; i++) {
+        this.repaint();
+    }
 
-            g.drawImage(this.starImage, this.arrayPositionXStar[i], this.positionYStar1, 5, 5, null);
-            //            g.drawImage(this.starImage, this.positionXStar1, this.positionYStar1, 5, 5, null);
+    private void renderBackground() {
+        this.graphics.setColor(Color.BLACK);
+        this.graphics.fillRect(0, 0, 1024, 600);
+    }
+
+    public void runAll() {
+        this.createStar();
+        this.stars.forEach(star -> star.run());
+        this.createEnemy();
+        this.enemies.forEach(enemy -> enemy.run());
+    }
+
+    private void createEnemy() {
+        if (this.countEnemy == 60) {
+            Enemy enemy = new Enemy(
+                    this.loadImage("resources-rocket-master/resources/images/circle.png"),
+                    this.random.nextInt(1024),
+                    this.random.nextInt(600),
+                    15,
+                    15,
+                    (this.random.nextInt(6) - 2),
+                    (this.random.nextInt(6) - 2)
+            );
+            this.enemies.add(enemy);
+            this.countEnemy = 0;
+        } else {
+            this.countEnemy += 1;
         }
-        g.drawImage(this.enemyImage, this.positionXEnemy, this.positionYEnemy, 10, 10, null);
 
-        g.drawImage(this.playerImage, this.positionXPlayer, this.positionYPlayer, 10, 10, null);
+    }
 
+    private void createStar() {
+        if (this.countStar == 10) {
+            Star star = new Star(
+                    this.loadImage("resources-rocket-master/resources/images/star.png"),
+                    1024,
+                    this.random.nextInt(600),
+                    5,
+                    5,
+                    -(this.random.nextInt(3) + 1),
+                    0
+            );
+            this.stars.add(star);
+            this.countStar = 0;
+        } else {
+            this.countStar += 1;
+        }
+
+    }
+
+    private void createPlayer() {
+        Player player = new Player(
+                    this.loadImage("resources-rocket-master/resources/images/circle.png"),
+                    450,
+                    200,
+                    5,
+                    5
+                     );
+        this.players.add(player);
+
+        }
+
+
+    private BufferedImage loadImage(String path) {
+        try {
+            return ImageIO.read(new File(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
