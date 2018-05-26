@@ -78,7 +78,7 @@ public class GameCanvas extends JPanel {
 
         this.graphics.drawImage(this.playerImage, this.positionXPlayer, this.positionYPlayer, null);
 //        this.players.forEach(player -> player.render(graphics));
-       
+
 
         this.repaint();
     }
