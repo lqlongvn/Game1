@@ -3,46 +3,38 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 
 public class Enemy {
+    private Random random = new Random();
     public BufferedImage image;
-    public int x;
-    public int y;
+    public Vector2D position;
     public int width;
     public int height;
-    public int velocityX;
-    public int velocityY;
-    private Random random = new Random();
+    public Vector2D velocity;
+    public int speed;
 
-    public Enemy(BufferedImage image, int x, int y, int width, int height, int velocityX, int velocityY) {
+    public Enemy(BufferedImage image, int x, int y, int width, int height, int speed) {
         this.image = image;
-        this.x = x;
-        this.y = y;
+        this.position = new Vector2D(x, y);
         this.width = width;
         this.height = height;
-        this.velocityX = velocityX;
-        this.velocityY = velocityY;
+        this.speed = speed;
+        this.velocity = new Vector2D();
+    }
+
+    public void moveForward(Vector2D positionPlayer) {
+        this.updateVelocity(positionPlayer);
+        this.run();
     }
 
 
+    public void updateVelocity(Vector2D positionPlayer) {
+        this.velocity.set(positionPlayer.subtract(this.position).normalize()).multiply(this.speed);
+    }
 
     public void run() {
-        this.x += this.velocityX;
-        this.y += this.velocityY;
-        if (this.x >= 1024) {
-            this.x = 0;
-            this.y = random.nextInt(600);
-        } else if (this.y >= 600) {
-            this.y = 0;
-            this.x = random.nextInt(1024);
-        } else if (this.x <= 0) {
-            this.x = 1024;
-            this.y = random.nextInt(600);
-        } else if (this.y <= 0) {
-            this.x = 600;
-            this.y = random.nextInt(600);
-        }
+        this.position.addUp(this.velocity);
     }
 
     public void render(Graphics graphics) {
-        graphics.drawImage(this.image, this.x, this.y, this.width, this.height, null);
+        graphics.drawImage(this.image, (int)this.position.x, (int)this.position.y, this.width, this.height, null);
     }
 }

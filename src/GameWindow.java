@@ -4,19 +4,17 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class GameWindow extends JFrame {
 
+public class GameWindow extends JFrame {
     GameCanvas gameCanvas;
     long lastTime = 0;
-
     public GameWindow() {
         this.setSize(1024, 600); // set size window
-
         this.setupGameCanvas();
         this.event();
-
         this.setVisible(true);
     }
+
 
     private void setupGameCanvas() {
         this.gameCanvas = new GameCanvas();
@@ -28,23 +26,21 @@ public class GameWindow extends JFrame {
         this.windowEvent();
     }
 
+
     private void keyboardEvent() {
         this.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
             }
-
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    gameCanvas.positionXPlayer -= 8;
+                    gameCanvas.player.velocity.set(gameCanvas.player.velocity.rotate(-25));
                 }
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    gameCanvas.positionXPlayer += 8;
+                    gameCanvas.player.velocity.set(gameCanvas.player.velocity.rotate(25));
                 }
-
             }
-
             @Override
             public void keyReleased(KeyEvent e) {
             }
@@ -60,6 +56,7 @@ public class GameWindow extends JFrame {
         });
     }
 
+
     public void gameLoop() {
         while (true) {
             long currentTime = System.nanoTime();
@@ -68,8 +65,6 @@ public class GameWindow extends JFrame {
                 this.gameCanvas.renderAll();
                 this.lastTime = currentTime;
             }
-
         }
     }
-
 }
